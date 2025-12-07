@@ -627,40 +627,45 @@ def edge_edit_view() -> rx.Component:
 
 
 def side_panel() -> rx.Component:
-    return rx.el.aside(
-        rx.el.div(
-            rx.cond(RelationshipState.node_create_mode, node_creation_view()),
-            rx.cond(
-                ~RelationshipState.node_create_mode
-                & RelationshipState.is_creating_relationship,
-                relationship_creation_view(),
+    return rx.drawer.root(
+        rx.drawer.portal(
+            rx.drawer.overlay(
+                class_name="fixed inset-0 bg-black/40 z-[9999]",
+                on_click=RelationshipState.close_panel,
             ),
-            rx.cond(
-                ~RelationshipState.node_create_mode
-                & ~RelationshipState.is_creating_relationship
-                & (RelationshipState.edit_mode == "node")
-                & RelationshipState.is_editing,
-                node_edit_view(),
+            rx.drawer.content(
+                rx.el.div(
+                    rx.cond(RelationshipState.node_create_mode, node_creation_view()),
+                    rx.cond(
+                        ~RelationshipState.node_create_mode
+                        & RelationshipState.is_creating_relationship,
+                        relationship_creation_view(),
+                    ),
+                    rx.cond(
+                        ~RelationshipState.node_create_mode
+                        & ~RelationshipState.is_creating_relationship
+                        & (RelationshipState.edit_mode == "node")
+                        & RelationshipState.is_editing,
+                        node_edit_view(),
+                    ),
+                    rx.cond(
+                        ~RelationshipState.node_create_mode
+                        & ~RelationshipState.is_creating_relationship
+                        & (RelationshipState.edit_mode == "node")
+                        & ~RelationshipState.is_editing,
+                        node_details_view(),
+                    ),
+                    rx.cond(
+                        ~RelationshipState.node_create_mode
+                        & ~RelationshipState.is_creating_relationship
+                        & (RelationshipState.edit_mode == "edge"),
+                        edge_edit_view(),
+                    ),
+                    class_name="flex-1 w-full h-full bg-white relative",
+                ),
+                class_name="fixed top-0 right-0 h-full w-96 flex flex-col bg-white shadow-2xl z-[10000] border-l border-gray-200 outline-none",
             ),
-            rx.cond(
-                ~RelationshipState.node_create_mode
-                & ~RelationshipState.is_creating_relationship
-                & (RelationshipState.edit_mode == "node")
-                & ~RelationshipState.is_editing,
-                node_details_view(),
-            ),
-            rx.cond(
-                ~RelationshipState.node_create_mode
-                & ~RelationshipState.is_creating_relationship
-                & (RelationshipState.edit_mode == "edge"),
-                edge_edit_view(),
-            ),
-            class_name="flex-1 w-full h-full bg-white relative z-50",
         ),
-        class_name=rx.cond(
-            RelationshipState.show_side_panel,
-            "fixed top-0 right-0 h-full w-96 bg-white shadow-2xl z-[10000] transform transition-transform duration-300 ease-in-out translate-x-0 border-l border-gray-200 flex flex-col",
-            "fixed top-0 right-0 h-full w-96 bg-white shadow-2xl z-[10000] transform transition-transform duration-300 ease-in-out translate-x-full border-l border-gray-200 flex flex-col",
-        ),
-        custom_attrs={"aria-label": "Side Panel"},
+        direction="right",
+        open=RelationshipState.show_side_panel,
     )
