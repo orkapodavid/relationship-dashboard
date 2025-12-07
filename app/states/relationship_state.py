@@ -627,6 +627,14 @@ class RelationshipState(rx.State):
                     if node_type == "company":
                         obj = session.get(Account, node_id)
                         if obj:
+                            op_type = (
+                                "CREATE"
+                                if abs(
+                                    (obj.updated_at - obj.created_at).total_seconds()
+                                )
+                                < 1
+                                else "UPDATE"
+                            )
                             self.selected_node_data = {
                                 "id": str(node_id),
                                 "display_name": obj.name,
@@ -636,11 +644,19 @@ class RelationshipState(rx.State):
                                     "%Y-%m-%d %H:%M:%S"
                                 ),
                                 "last_modified_by": obj.last_modified_by,
-                                "operation_type": "UPDATE",
+                                "operation_type": op_type,
                             }
                     else:
                         obj = session.get(Contact, node_id)
                         if obj:
+                            op_type = (
+                                "CREATE"
+                                if abs(
+                                    (obj.updated_at - obj.created_at).total_seconds()
+                                )
+                                < 1
+                                else "UPDATE"
+                            )
                             self.selected_node_data = {
                                 "id": str(node_id),
                                 "display_name": f"{obj.first_name} {obj.last_name}",
@@ -650,7 +666,7 @@ class RelationshipState(rx.State):
                                     "%Y-%m-%d %H:%M:%S"
                                 ),
                                 "last_modified_by": obj.last_modified_by,
-                                "operation_type": "UPDATE",
+                                "operation_type": op_type,
                             }
         except Exception as e:
             logging.exception(f"Error loading node details: {e}")
