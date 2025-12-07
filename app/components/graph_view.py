@@ -28,6 +28,5 @@ def graph_view() -> rx.Component:
             on_connect=RelationshipState.on_connect,
             class_name="bg-gray-50 w-full h-full",
         ),
-        search_bar(),
         class_name="w-full h-full relative",
     )
