@@ -123,5 +123,5 @@ def search_bar() -> rx.Component:
                 class_name="flex gap-2 items-center border-l border-gray-200 pl-4",
             ),
         ),
-        class_name="absolute top-4 left-4 z-[50] flex flex-wrap items-center gap-4 bg-white/95 backdrop-blur-sm p-3 rounded-2xl shadow-xl border border-gray-200/50 max-w-[90vw]",
+        class_name="absolute top-4 left-4 z-[500] flex flex-wrap items-center gap-4 bg-white/95 backdrop-blur-sm p-3 rounded-2xl shadow-xl border border-gray-200/50 max-w-[90vw]",
     )
