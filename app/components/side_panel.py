@@ -46,7 +46,7 @@ def node_creation_view() -> rx.Component:
     return rx.el.div(
         rx.el.h2(
             "New Entity",
-            class_name="text-xl font-bold mb-6 text-gray-900 border-b pb-2",
+            class_name="text-xl font-bold mb-6 text-gray-900 border-b pb-2 shrink-0",
         ),
         rx.el.div(
             rx.el.label(
@@ -135,6 +135,9 @@ def node_creation_view() -> rx.Component:
                     ),
                 ),
             ),
+            class_name="flex-1 overflow-y-auto mb-4 min-h-0",
+        ),
+        rx.el.div(
             rx.el.button(
                 rx.cond(
                     RelationshipState.is_loading,
@@ -150,7 +153,7 @@ def node_creation_view() -> rx.Component:
                 on_click=RelationshipState.cancel_node_creation,
                 class_name="w-full bg-white hover:bg-gray-50 text-gray-700 font-medium py-2.5 px-4 rounded-lg border border-gray-300 transition-colors",
             ),
-            class_name="flex-1 overflow-y-auto",
+            class_name="shrink-0 pt-4 border-t border-gray-200 bg-white mt-auto",
         ),
         class_name="p-6 h-full flex flex-col bg-white",
     )
@@ -160,7 +163,7 @@ def node_edit_view() -> rx.Component:
     return rx.el.div(
         rx.el.h2(
             "Edit Entity",
-            class_name="text-xl font-bold mb-6 text-gray-900 border-b pb-2",
+            class_name="text-xl font-bold mb-6 text-gray-900 border-b pb-2 shrink-0",
         ),
         rx.el.div(
             rx.cond(
@@ -225,6 +228,9 @@ def node_edit_view() -> rx.Component:
                     ),
                 ),
             ),
+            class_name="flex-1 overflow-y-auto mb-4 min-h-0",
+        ),
+        rx.el.div(
             rx.el.button(
                 rx.cond(
                     RelationshipState.is_loading,
@@ -240,19 +246,16 @@ def node_edit_view() -> rx.Component:
                 on_click=RelationshipState.cancel_edit,
                 class_name="w-full bg-white hover:bg-gray-50 text-gray-700 font-medium py-2.5 px-4 rounded-lg border border-gray-300 transition-colors mb-6",
             ),
-            rx.el.div(
-                rx.el.button(
-                    rx.icon("trash-2", class_name="w-4 h-4 mr-2"),
-                    "Delete Entity",
-                    on_click=lambda: RelationshipState.delete_node(
-                        RelationshipState.editing_node_id,
-                        RelationshipState.editing_node_type,
-                    ),
-                    class_name="w-full flex items-center justify-center bg-white border border-red-200 text-red-600 hover:bg-red-50 font-semibold py-2.5 px-4 rounded-lg transition-colors",
+            rx.el.button(
+                rx.icon("trash-2", class_name="w-4 h-4 mr-2"),
+                "Delete Entity",
+                on_click=lambda: RelationshipState.delete_node(
+                    RelationshipState.editing_node_id,
+                    RelationshipState.editing_node_type,
                 ),
-                class_name="mt-auto pt-6 border-t",
+                class_name="w-full flex items-center justify-center bg-white border border-red-200 text-red-600 hover:bg-red-50 font-semibold py-2.5 px-4 rounded-lg transition-colors",
             ),
-            class_name="flex-1 overflow-y-auto flex flex-col",
+            class_name="shrink-0 pt-4 border-t border-gray-200 bg-white mt-auto",
         ),
         class_name="p-6 h-full flex flex-col",
     )
@@ -447,9 +450,12 @@ def node_details_view() -> rx.Component:
                         class_name="py-8 bg-gray-50 rounded-lg border border-dashed border-gray-200",
                     ),
                 ),
-                class_name="flex-1 overflow-y-auto mb-4",
+                class_name="flex-1 mb-4",
             ),
-            rx.el.div(class_name="border-t border-gray-200 my-6"),
+            class_name="flex-1 overflow-y-auto min-h-0 mb-4",
+        ),
+        rx.el.div(
+            rx.el.div(class_name="border-t border-gray-200 my-4"),
             rx.el.div(
                 rx.el.h3(
                     "Record Metadata", class_name="text-sm font-bold text-gray-900 mb-4"
@@ -488,18 +494,15 @@ def node_details_view() -> rx.Component:
                     default_value=RelationshipState.selected_node_data["updated_at"],
                     key=RelationshipState.selected_node_id.to_string() + "_ts",
                 ),
-                class_name="shrink-0",
+                class_name="shrink-0 mb-6",
             ),
-            rx.el.div(
-                rx.el.button(
-                    rx.icon("trash-2", class_name="w-4 h-4 mr-2"),
-                    "Delete Entity",
-                    on_click=RelationshipState.delete_current_selection,
-                    class_name="w-full flex items-center justify-center bg-white border border-red-200 text-red-600 hover:bg-red-50 font-semibold py-2.5 px-4 rounded-lg transition-colors",
-                ),
-                class_name="mt-auto pt-6 border-t",
+            rx.el.button(
+                rx.icon("trash-2", class_name="w-4 h-4 mr-2"),
+                "Delete Entity",
+                on_click=RelationshipState.delete_current_selection,
+                class_name="w-full flex items-center justify-center bg-white border border-red-200 text-red-600 hover:bg-red-50 font-semibold py-2.5 px-4 rounded-lg transition-colors",
             ),
-            class_name="flex-1 flex flex-col min-h-0",
+            class_name="shrink-0 pt-4 border-t border-gray-200 bg-white mt-auto",
         ),
         class_name="p-6 h-full flex flex-col",
     )
