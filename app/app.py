@@ -17,10 +17,14 @@ async def lifespan_task():
     yield
 
 
+from app.components.search_bar import search_bar
+
+
 def index() -> rx.Component:
     """The main page layout."""
     return rx.el.div(
         rx.el.div(graph_view(), class_name="absolute inset-0 z-0 w-full h-full"),
+        search_bar(),
         side_panel(),
         class_name="relative h-screen w-full font-sans bg-white text-gray-900 font-['Inter'] overflow-hidden",
     )
